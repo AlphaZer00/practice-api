@@ -17,30 +17,29 @@
 
 			submitBtn.addEventListener("click", (e) => {
 				e.preventDefault();
+				callAPI().catch((err) => {
+					console.error(err);
+				});
+			});
+
+			async function callAPI() {
 				const searchInput = document.getElementById("search");
 				const searchValue = searchInput.value;
 				const img = document.querySelector("img");
 				div.textContent = "";
 
-				fetch(
+				const response = await fetch(
 					"https://api.giphy.com/v1/gifs/translate?api_key=ZLMgfAQLrm5QvqFMiL1zINxakgDyLiSK&s=" +
 						searchValue,
 					{ mode: "cors" }
-				)
-					.then(function (response) {
-						return response.json();
-					})
-					.then(function (response) {
-						if (response.meta.status === 200) {
-							showSearchError();
-						} else {
-							img.src = response.data.images.original.url;
-						}
-					})
-					.catch(function (err) {
-						console.log("Error: " + err);
-					});
-			});
+				);
+				const gifData = await response.json();
+				if (gifData.meta.status === 200) {
+					showSearchError();
+				} else {
+					img.src = gifData.data.images.original.url;
+				}
+			}
 
 			function showSearchError() {
 				const img = document.querySelector("img");
