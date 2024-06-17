@@ -13,12 +13,14 @@
 		<img src="#" />
 		<script>
 			const submitBtn = document.querySelector(".submit");
+			const div = document.createElement("div");
 
 			submitBtn.addEventListener("click", (e) => {
 				e.preventDefault();
 				const searchInput = document.getElementById("search");
 				const searchValue = searchInput.value;
 				const img = document.querySelector("img");
+				div.textContent = "";
 
 				fetch(
 					"https://api.giphy.com/v1/gifs/translate?api_key=ZLMgfAQLrm5QvqFMiL1zINxakgDyLiSK&s=" +
@@ -29,12 +31,23 @@
 						return response.json();
 					})
 					.then(function (response) {
-						img.src = response.data.images.original.url;
+						if (response.meta.status === 200) {
+							showSearchError();
+						} else {
+							img.src = response.data.images.original.url;
+						}
 					})
 					.catch(function (err) {
-						console.log(err);
+						console.log("Error: " + err);
 					});
 			});
+
+			function showSearchError() {
+				const img = document.querySelector("img");
+				div.textContent =
+					"No gifs matching that search term were found! :(";
+				img.after(div);
+			}
 		</script>
 	</body>
 </html>
