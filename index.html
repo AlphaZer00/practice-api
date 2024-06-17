@@ -5,24 +5,24 @@
 		<title>Document</title>
 	</head>
 	<body>
-		<button id="newGif">Random Gif</button>
-    <form>
-      <label for="search">I want a gif of:</label>
-      <input type="text" name="userSearch" id="search">
-      <button type="submit" class="submit">Submit</button>
-    </form>
+		<form>
+			<label for="search">I want a gif of:</label>
+			<input type="text" name="userSearch" id="search" />
+			<button type="submit" class="submit">Submit</button>
+		</form>
 		<img src="#" />
 		<script>
-      const submitBtn = document.querySelector('.submit');
-      
+			const submitBtn = document.querySelector(".submit");
+
 			submitBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const searchInput = document.getElementById('search');
-        const searchValue = searchInput.value;
+				e.preventDefault();
+				const searchInput = document.getElementById("search");
+				const searchValue = searchInput.value;
 				const img = document.querySelector("img");
 
 				fetch(
-					"https://api.giphy.com/v1/gifs/translate?api_key=ZLMgfAQLrm5QvqFMiL1zINxakgDyLiSK&s=" + searchValue,
+					"https://api.giphy.com/v1/gifs/translate?api_key=ZLMgfAQLrm5QvqFMiL1zINxakgDyLiSK&s=" +
+						searchValue,
 					{ mode: "cors" }
 				)
 					.then(function (response) {
@@ -31,8 +31,10 @@
 					.then(function (response) {
 						img.src = response.data.images.original.url;
 					})
-          .catch(console.log('error'));
-      });
+					.catch(function (err) {
+						console.log(err);
+					});
+			});
 		</script>
 	</body>
 </html>
